@@ -35,6 +35,21 @@ func Admin(ctx context.Context, group *ghttp.RouterGroup) {
 }
 ```
 
+**⚠️ 关键约束：新增接口必须注册路由**
+
+每新增一个 Controller 方法后，**必须**在此处的 `group.Bind(...)` 中添加对应的路由注册。
+缺少这一步会导致新增的接口不可访问（返回 404）。
+
+```go
+group.Bind(
+    admin.NewV1().FooList,    // ✅ 已注册
+    admin.NewV1().FooView,    // ✅ 已注册
+    // admin.NewV1().FooNew,  // ❌ 新增后未注册 → 接口 404
+)
+```
+
+> 完整的新增接口检查清单见 `gfstack-api` §4。
+
 ## 2. Middleware
 
 TRIGGER: middleware, AdminAuth, CORS, Ctx, ResponseHandler, Blacklist, PreFilter, RequestLog, DemoLimit, Develop
