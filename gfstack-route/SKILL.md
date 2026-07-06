@@ -35,20 +35,20 @@ func Admin(ctx context.Context, group *ghttp.RouterGroup) {
 }
 ```
 
-**⚠️ 关键约束：新增接口必须注册路由**
+**⚠️ Key Constraint: New Interfaces MUST Register Routes**
 
-每新增一个 Controller 方法后，**必须**在此处的 `group.Bind(...)` 中添加对应的路由注册。
-缺少这一步会导致新增的接口不可访问（返回 404）。
+After adding a new Controller method, you **MUST** add its route binding in `group.Bind(...)` above.
+Missing this step causes the new interface to be unreachable (returns 404).
 
 ```go
 group.Bind(
-    admin.NewV1().FooList,    // ✅ 已注册
-    admin.NewV1().FooView,    // ✅ 已注册
-    // admin.NewV1().FooNew,  // ❌ 新增后未注册 → 接口 404
+    admin.NewV1().FooList,    // ✅ registered
+    admin.NewV1().FooView,    // ✅ registered
+    // admin.NewV1().FooNew,  // ❌ missing registration → 404
 )
 ```
 
-> 完整的新增接口检查清单见 `gfstack-api` §4。
+> See `gfstack-api` §4 for the full new-interface checklist.
 
 ## 2. Middleware
 
